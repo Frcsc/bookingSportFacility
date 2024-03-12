@@ -1,0 +1,27 @@
+version: '3'
+services:
+  database:
+    container_name: kansala-database
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: ${DB_HOST:-kansala}
+      POSTGRES_USER: ${DB_USER:-kansala}
+      POSTGRES_PASSWORD: ${DB_PASS:-kansala}
+
+  django:
+    container_name: backend-kansala
+    build:
+      context: .
+      dockerfile: dev.Dockerfile
+    volumes:
+      - .:/kansala
+    ports:
+      - "8000:8000"
+    depends_on:
+      - database
+    environment:
+      DB_HOST: "database"
+      DB_PASS: ${DB_PASS:-kansala}
+
+    stdin_open: true
+    tty: true
