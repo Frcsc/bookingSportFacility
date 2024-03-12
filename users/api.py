@@ -23,3 +23,7 @@ class LoginAPIView(AllowAnyPermission, APIView):
         return Response(
             {'token': token, 'expiry': instance.expiry}, status=status.HTTP_200_OK
         )
+
+
+class ResetPassword(AllowAnyPermission, APIView):
+    pass
