@@ -23,3 +23,13 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'email']
+
+
+class UserRestPasswordInitiationSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+
+
+class UserUpdatePasswordSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    token = serializers.CharField()
+    password = serializers.CharField(validators=[PASSWORD_REGEX_VALIDATOR])

@@ -2,7 +2,9 @@ import datetime
 import secrets
 import string
 
+from django.conf import settings
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.core.mail import EmailMultiAlternatives
 from django.db import models
 from django.template.loader import render_to_string
@@ -10,6 +12,8 @@ from django.utils import timezone
 from django.utils.html import strip_tags
 
 from kansala_sports.mixin import BaseModel
+
+password_reset_token = PasswordResetTokenGenerator()
 
 
 class UserManager(BaseUserManager):
@@ -43,6 +47,21 @@ class User(AbstractBaseUser):
 
     def has_module_perms(self, app_label):
         return True
+
+    def send_reset_password_link(self):
+        data = {
+            'PASSWORD_RESET_PAGE_URL': settings.PASSWORD_RESET_PAGE_URL,
+            'token': password_reset_token.make_token(self),
+            'email': self.email,
+        }
+        html_message = render_to_string('password_reset.html', context=data)
+        message = EmailMultiAlternatives(
+            subject="Reset Password",
+            body=strip_tags(html_message),
+            to=[self.email],
+        )
+        message.attach_alternative(html_message, 'text/html')
+        message.send()
 
 
 class TwoFactorAuthentication(BaseModel):

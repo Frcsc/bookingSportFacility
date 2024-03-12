@@ -184,3 +184,7 @@ EMAIL_TIMEOUT = config(
     'EMAIL_TIMEOUT', default=None, cast=lambda x: int(x) if x is not None else None
 )
 DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default="webmaster@localhost")
+
+PASSWORD_RESET_PAGE_URL = config('PASSWORD_RESET_PAGE_URL')
+
+PASSWORD_RESET_TIMEOUT = config('PASSWORD_RESET_TIMEOUT', cast=int, default=3600)
