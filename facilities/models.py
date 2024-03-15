@@ -6,7 +6,7 @@ from kansala_sports.mixin import BaseModel
 class CourtBase(BaseModel):
     name = models.CharField(max_length=128)
     is_available = models.BooleanField(default=True)
-    logo = models.ImageField()
+    logo = models.ImageField(null=True, blank=True)
     address = models.CharField(max_length=512)
     person_in_charge = models.ForeignKey(
         'operations.OperationProfile', on_delete=models.SET_NULL, null=True
