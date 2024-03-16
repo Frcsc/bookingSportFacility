@@ -24,9 +24,9 @@ class RegisterCustomerSerializer(serializers.Serializer):
         name = validated_data.get('name')
 
         user = User.objects.create_user(email=email, password=password)
-        CustomerProfile.objects.create(user=user, name=name)
+        customer = CustomerProfile.objects.create(user=user, name=name)
 
-        return user
+        return customer
 
 
 class CustomerTwoFactorVerificationSerializer(serializers.Serializer):
