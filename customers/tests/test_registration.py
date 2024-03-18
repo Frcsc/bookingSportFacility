@@ -1,6 +1,3 @@
-# from unittest.mock import patch
-
-# import exrex
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from factory import fuzzy
@@ -8,12 +5,7 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 from customers.models import CustomerProfile
-
-# from customers.tests.factories import CustomerProfileFactory
 from users.models import TwoFactorAuthentication
-
-# from users.tests.factories import UserFactory
-# from users.validations import PASSWORD_REGEX
 
 User = get_user_model()
 
