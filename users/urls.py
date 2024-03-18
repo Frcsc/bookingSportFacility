@@ -10,7 +10,7 @@ urlpatterns = [
     re_path(r"logout/", knox_views.LogoutView.as_view(), name="logout"),
     path(
         'password-reset-initiation/',
-        api.ResetPasswordAPIView.as_view(),
+        api.InitiateResetPasswordAPIView.as_view(),
         name="password-reset-initiation",
     ),
     path(

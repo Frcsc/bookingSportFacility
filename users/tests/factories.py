@@ -26,4 +26,5 @@ class TwoFactorAuthenticationFactory(factory.django.DjangoModelFactory):
 class AuthTokenFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = AuthToken
+
     user = factory.SubFactory(UserFactory)

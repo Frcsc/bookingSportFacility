@@ -35,7 +35,7 @@ class LoginAPIView(AllowAnyPermission, APIView):
         )
 
 
-class ResetPasswordAPIView(AllowAnyPermission, APIView):
+class InitiateResetPasswordAPIView(AllowAnyPermission, APIView):
     def post(self, request, *args, **kwargs):
         serializer = UserRestPasswordInitiationSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
