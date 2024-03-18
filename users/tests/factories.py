@@ -1,4 +1,3 @@
-# import datetime
 import secrets
 import string
 
@@ -27,9 +26,4 @@ class TwoFactorAuthenticationFactory(factory.django.DjangoModelFactory):
 class AuthTokenFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = AuthToken
-
-    # digest = fuzzy.FuzzyText(length=128).fuzz()
-    # token_key = fuzzy.FuzzyText(length=128).fuzz()
     user = factory.SubFactory(UserFactory)
-    # created = fuzzy.FuzzyDateTime(datetime.datetime(2021, 1, 1, tzinfo=datetime.timezone.utc)).fuzz()
-    # expiry  = fuzzy.FuzzyDateTime(start_dt=created + datetime.timedelta(hours=1)).fuzz()
