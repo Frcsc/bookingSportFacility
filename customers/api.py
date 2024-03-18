@@ -3,6 +3,7 @@ from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from customers.models import CustomerProfile
 from customers.serializers import (
     CustomerProfileSerializer,
     CustomerRequestNewVerficationCodeSerializer,
@@ -39,7 +40,13 @@ class CustomerTwoFactorVerificationAPIView(AllowAnyPermission, APIView):
         email = serializer.validated_data["email"]
 
         user = User.objects.get(email=email)
-        two_fa = TwoFactorAuthentication.objects.get(user=user)
+        try:
+            two_fa = TwoFactorAuthentication.objects.get(user=user)
+        except TwoFactorAuthentication.DoesNotExist:
+            return Response(
+                "No 2FA instance. please request a new 2FA",
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
         if not two_fa.code == code:
             return Response("Invalid Code", status=status.HTTP_400_BAD_REQUEST)
@@ -59,11 +66,11 @@ class CustomerRequestNewVerficationCodeAPIView(
         serializer.is_valid(raise_exception=True)
         email = serializer.validated_data["email"]
 
-        user = User.objects.get(email=email)
-        two_fa = TwoFactorAuthentication.objects.get(user=user)
+        customer = CustomerProfile.objects.get(user__email=email)
+        two_fa = TwoFactorAuthentication.objects.get(user=customer.user)
         two_fa.set_new_code()
         two_fa.save()
-        two_fa.send_two_factor_code_email(user.customer.name)
+        two_fa.send_two_factor_code_email(customer.name)
 
         return Response(
             "Please proceed to verify your email", status=status.HTTP_200_OK
