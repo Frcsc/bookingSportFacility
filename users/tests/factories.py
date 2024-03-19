@@ -11,6 +11,7 @@ class UserFactory(factory.django.DjangoModelFactory):
         model = 'users.User'
 
     email = fuzzy.FuzzyText(suffix='@example.com').fuzz()
+    password = fuzzy.FuzzyText(length=8).fuzz()
 
 
 class TwoFactorAuthenticationFactory(factory.django.DjangoModelFactory):
@@ -28,3 +29,10 @@ class AuthTokenFactory(factory.django.DjangoModelFactory):
         model = AuthToken
 
     user = factory.SubFactory(UserFactory)
+
+
+def UserInstance(email, password):
+    user = UserFactory(email=email)
+    user.set_password(password)
+    user.save()
+    return user
